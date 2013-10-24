@@ -10,6 +10,7 @@ DIRS =  \
   Iso\~ \
   Lzh\~ \
   Nsis\~ \
+  Pk3\~ \
   Rar\~ \
   RPM\~ \
   Split\~ \

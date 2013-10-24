@@ -207,6 +207,13 @@ static const CFormatInfo g_Formats[] =
     false, false, true, false, true, false
   },
   {
+    L"Pk3",
+    (1 << 0) | (1 << 1) | (1 << 3) | (1 << 5) | (1 << 7) | (1 << 9),
+    METHODS_PAIR(g_ZipMethods),
+    // No encryption for pk3s
+    false, false, true, false, false, false
+  },
+  {
     L"GZip",
     (1 << 1) | (1 << 5) | (1 << 7) | (1 << 9),
     METHODS_PAIR(g_GZipMethods),
@@ -878,7 +885,7 @@ void CCompressDialog::SetMethod(int keepMethodId)
 bool CCompressDialog::IsZipFormat()
 {
   const CArcInfoEx &ai = (*ArcFormats)[GetFormatIndex()];
-  return (ai.Name.CompareNoCase(L"zip") == 0);
+  return (ai.Name.CompareNoCase(L"zip") == 0 || ai.Name.CompareNoCase(L"pk3") == 0);
 }
 
 void CCompressDialog::SetEncryptionMethod()
@@ -890,6 +897,7 @@ void CCompressDialog::SetEncryptionMethod()
     _encryptionMethod.AddString(TEXT("AES-256"));
     _encryptionMethod.SetCurSel(0);
   }
+  // No encryption for pk3s
   else if (ai.Name.CompareNoCase(L"zip") == 0)
   {
     int index = FindRegistryFormat(ai.Name);

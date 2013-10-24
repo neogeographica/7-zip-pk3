@@ -300,6 +300,11 @@ NSIS_OBJS = \
   $O\NsisIn.obj \
   $O\NsisRegister.obj \
 
+PK3_OBJS = \
+  $O\Pk3Handler.obj \
+  $O\Pk3Stream.obj \
+  $O\Pk3Register.obj \
+
 RAR_OBJS = \
   $O\RarHandler.obj \
   $O\RarHeader.obj \
@@ -460,6 +465,7 @@ OBJS = \
   $(HFS_OBJS) \
   $(ISO_OBJS) \
   $(NSIS_OBJS) \
+  $(PK3_OBJS) \
   $(RAR_OBJS) \
   $(TAR_OBJS) \
   $(UDF_OBJS) \
@@ -502,6 +508,8 @@ $(HFS_OBJS): ../../Archive/Hfs/$(*B).cpp
 $(ISO_OBJS): ../../Archive/Iso/$(*B).cpp
 	$(COMPL)
 $(NSIS_OBJS): ../../Archive/Nsis/$(*B).cpp
+	$(COMPL)
+$(PK3_OBJS): ../../Archive/Pk3/$(*B).cpp
 	$(COMPL)
 $(RAR_OBJS): ../../Archive/Rar/$(*B).cpp
 	$(COMPL)

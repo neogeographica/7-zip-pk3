@@ -205,7 +205,8 @@ static const char *g_Exts =
   " abf afm bdf fon mgf otf pcf pfa snf ttf"
   " dbf mdb nsf ntf wdb db fdb gdb"
   " exe dll ocx vbx sfx sys tlb awx com obj lib out o so "
-  " pdb pch idb ncb opt";
+  " pdb pch idb ncb opt"
+  " pk3";
 
 int GetExtIndex(const char *ext)
 {

@@ -259,7 +259,8 @@ static const wchar_t *kArcExts[] =
   L"bz2",
   L"gz",
   L"rar",
-  L"zip"
+  L"zip",
+  L"pk3"
 };
 
 static bool IsItArcExt(const UString &ext2)
@@ -336,7 +337,7 @@ static const char *kExtractExludeExtensions =
   " ";
 
 static const char *kNoOpenAsExtensions =
-  " 7z arj bz2 cab chm cpio dmg flv gz lha lzh lzma rar swm tar tbz2 tgz wim xar xz z zip ";
+  " 7z arj bz2 cab chm cpio dmg flv gz lha lzh lzma rar swm tar tbz2 tgz wim xar xz z zip pk3 ";
 
 static bool FindExt(const char *p, const UString &name)
 {
@@ -447,7 +448,7 @@ STDMETHODIMP CZipContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu,
           _commandMap.Add(commandMapItem);
           
           UINT subIndex2 = 0;
-          const wchar_t *exts[] = { L"", L"*", L"7z", L"zip", L"cab", L"rar" };
+          const wchar_t *exts[] = { L"", L"*", L"7z", L"zip", L"pk3", L"cab", L"rar" };
           for (int i = (thereIsMainOpenItem ? 1 : 0); i < sizeof(exts) / sizeof(exts[0]); i++)
           {
             CCommandMapItem commandMapItem;
