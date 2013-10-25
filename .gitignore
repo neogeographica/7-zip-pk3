@@ -6,3 +6,4 @@
 
 # build results
 O/
+*.pdb

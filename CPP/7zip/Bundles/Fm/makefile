@@ -11,6 +11,11 @@ LIBS = $(LIBS) comctl32.lib htmlhelp.lib comdlg32.lib Mpr.lib Gdi32.lib
 CFLAGS = $(CFLAGS) -DWIN_LONG_PATH -DSUPPORT_DEVICE_FILE
 !ENDIF
 
+!IFDEF DEBUG
+CFLAGS = $(CFLAGS) /Zi
+LIBS = $(LIBS) /DEBUG
+!ENDIF
+
 FM_OBJS = \
   $O\App.obj \
   $O\BrowseDialog.obj \
