@@ -4,6 +4,7 @@
 #include "Pk3Stream.h"
 
 
+// QuakeLive XOR pattern from Luigi Auriemma (cf. quakelivedec).
 static const Byte quakeliveXor[] =
         "\xcf\x8e\x8e\x4c\xd0\xd9\x30\xce\x07\x32\x27\x64\xed\x16\x06\x12"
         "\x20\x99\x55\x21\x7b\x10\xef\x57\x8b\xbf\x2e\x09\xee\x6b\xaa\x7c"
@@ -70,6 +71,8 @@ static const Byte quakeliveXor[] =
         "\xba\xd9\x75\x31\xda\x9c\xb2\xfd\x2b\xa5\x7e\x78\x3a\xaf\x22\xc4"
         "\x80\x90\x31\xf4\xd5\x9b\x04\x19\x09\xa2\x26\x91\xd2\xfe\x44\xb6";
 
+// XOR transform utility function (same for read or write)
+
 inline void XformData(void *dataIn, void *dataOut, UInt32 len, UInt64 pos)
 {
     UInt32 xorSize = sizeof(quakeliveXor) - 1;
@@ -82,16 +85,28 @@ inline void XformData(void *dataIn, void *dataOut, UInt32 len, UInt64 pos)
     }
 }
 
+// Constructor for CPk3InStream
+
 CPk3InStream::CPk3InStream(IInStream *stream)
 {
     _stream = stream;  
+    // XXX This constructor should only be invoked when starting at the
+    //     beginning of the pk3 archive, but I still need to think about
+    //     whether the stream position would ever NOT be zero at this point.
+    //     Test cases of pk3-inside-other-archive perhaps? If the stream can
+    //     have a nonzero seek pointer, then the initial pointer would need
+    //     to be saved & used to affect the XOR.
     _pos = 0;
 }
+
+// INTERFACE_IInStream for CPk3InStream
 
 STDMETHODIMP CPk3InStream::Read(void *data, UInt32 size, UInt32 *processedSize)
 {
     UInt32 realProcessedSize;
     HRESULT result = _stream->Read(data, size, &realProcessedSize);
+    // The data read from the stream is XOR-scrambled, so unscramble it before
+    // returning it to the caller.
     XformData(data, data, realProcessedSize, _pos);
     _pos += realProcessedSize;
     if (processedSize != NULL)
@@ -111,14 +126,24 @@ STDMETHODIMP CPk3InStream::Seek(Int64 offset, UInt32 seekOrigin, UInt64 *newPosi
     return result;
 }
 
+// Constructor for CPk3OutStream
+
 CPk3OutStream::CPk3OutStream(IOutStream *stream)
 {
     _stream = stream;  
+    // XXX Similar to CPk3InStream, question about whether seek pointer is
+    //     always zero at this point.
     _pos = 0;
 }
 
+// INTERFACE_IOutStream for CPk3OutStream
+
 STDMETHODIMP CPk3OutStream::Write(const void *data, UInt32 size, UInt32 *processedSize)
 {
+    // We need to XOR-scramble the data before writing it to the stream. To be
+    // polite we shouldn't mess with the input data buffer -- especially since
+    // we might do a partial write. So we'll stage the scrambled data into our
+    // own buffer and write that to the stream in staging-buffer-sized chunks.
     HRESULT result = S_OK;
     UInt32 sizeLeft = size;
     while (result == S_OK && sizeLeft != 0)
@@ -135,6 +160,12 @@ STDMETHODIMP CPk3OutStream::Write(const void *data, UInt32 size, UInt32 *process
         XformData(&(((Byte*)data)[size - sizeLeft]), _staging, len, _pos);
         UInt32 realProcessedSize;
         result = _stream->Write(_staging, len, &realProcessedSize);
+        // N.B. It does look like we're doing some redundant math here, but
+        // this is a way to avoid cramming 64-bit values into 32-bit function
+        // parameters. (We could do 64-to-32 bit conversions that are "known
+        // to be safe" because of the overall algorithm, but it's hard to
+        // convince the compiler about that safety & it feels like it's trying
+        // too hard to be clever.)
         _pos += realProcessedSize;
         sizeLeft -= realProcessedSize;
     }
@@ -156,5 +187,6 @@ STDMETHODIMP CPk3OutStream::Seek(Int64 offset, UInt32 seekOrigin, UInt64 *newPos
 
 STDMETHODIMP CPk3OutStream::SetSize(UInt64 newSize)
 {
+    // This should not affect the seek pointer.
     return _stream->SetSize(newSize);
 }

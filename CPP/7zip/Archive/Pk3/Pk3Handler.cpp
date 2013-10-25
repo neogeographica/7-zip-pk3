@@ -10,8 +10,11 @@ using namespace NWindows;
 namespace NArchive {
 namespace NPk3 {
 
+// Constructor
+
 CHandler::CHandler()
 {
+    // All interface invocations will be passed to this Zip handler instance.
     m_Delegate = new NArchive::NZip::CHandler();
 }
 
@@ -20,6 +23,8 @@ CHandler::CHandler()
 STDMETHODIMP CHandler::Open(IInStream *inStream,
     const UInt64 *maxCheckStartPosition, IArchiveOpenCallback *callback)
 {
+    // Wrap the input stream to perform the QuakeLive XOR before data is seen
+    // by the Zip handler.
     CMyComPtr<CPk3InStream> pk3InStream = new CPk3InStream(inStream);
     return m_Delegate->Open(pk3InStream, maxCheckStartPosition, callback);
 }
@@ -78,7 +83,9 @@ STDMETHODIMP CHandler::GetArchivePropertyInfo(UInt32 index, BSTR *name,
 STDMETHODIMP CHandler::UpdateItems(ISequentialOutStream *outStream,
     UInt32 numItems, IArchiveUpdateCallback *callback)
 {
-    // Zip code wants this stream to support the IOutStream interface.
+    // Wrap the output stream to perform the QuakeLive XOR on data generated
+    // by the Zip handler. One twist here is that Zip handler wants this
+    // stream to support the IOutStream interface.
     CMyComPtr<IOutStream> outStreamReal;
     outStream->QueryInterface(IID_IOutStream, (void **)&outStreamReal);
     if (!outStreamReal)
