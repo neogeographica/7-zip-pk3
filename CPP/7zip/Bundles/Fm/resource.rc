@@ -3,5 +3,5 @@
 
 STRINGTABLE
 BEGIN
-  100 "7z zip bz2 bzip2 tbz2 tbz rar arj z taz lzh lha cab iso 001 rpm deb cpio tar gz gzip tgz tpz4 wim swm lzma dmg hfs xar vhd fat ntfs xz"
+  100 "7z zip pk3 bz2 bzip2 tbz2 tbz rar arj z taz lzh lha cab iso 001 rpm deb cpio tar gz gzip tgz tpz4 wim swm lzma dmg hfs xar vhd fat ntfs xz"
 END
