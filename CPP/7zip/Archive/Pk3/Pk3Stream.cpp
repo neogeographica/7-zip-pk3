@@ -4,8 +4,12 @@
 #include "Pk3Stream.h"
 
 
-// QuakeLive XOR pattern from Luigi Auriemma (cf. quakelivedec).
-static const Byte quakeliveXor[] =
+// XOR transform utility function (same for read or write)
+
+inline void XformData(void *dataIn, void *dataOut, UInt32 len, UInt64 pos)
+{
+    // QuakeLive XOR pattern from Luigi Auriemma (cf. quakelivedec).
+    static const Byte quakeliveXor[] =
         "\xcf\x8e\x8e\x4c\xd0\xd9\x30\xce\x07\x32\x27\x64\xed\x16\x06\x12"
         "\x20\x99\x55\x21\x7b\x10\xef\x57\x8b\xbf\x2e\x09\xee\x6b\xaa\x7c"
         "\xcc\x3c\x95\xee\xba\xd7\x4b\x88\x84\x88\xd2\x70\x4c\x09\x30\xf2"
@@ -70,12 +74,7 @@ static const Byte quakeliveXor[] =
         "\x29\x0e\x64\xeb\x24\x27\x87\xe3\xf2\xc3\xc6\x5d\xde\xe5\x3f\x46"
         "\xba\xd9\x75\x31\xda\x9c\xb2\xfd\x2b\xa5\x7e\x78\x3a\xaf\x22\xc4"
         "\x80\x90\x31\xf4\xd5\x9b\x04\x19\x09\xa2\x26\x91\xd2\xfe\x44\xb6";
-
-// XOR transform utility function (same for read or write)
-
-inline void XformData(void *dataIn, void *dataOut, UInt32 len, UInt64 pos)
-{
-    UInt32 xorSize = sizeof(quakeliveXor) - 1;
+    static UInt32 xorSize = sizeof(quakeliveXor) - 1;
     UInt32 dataIndex, xorIndex;
     for (dataIndex = 0; dataIndex < len; dataIndex++)
     {
