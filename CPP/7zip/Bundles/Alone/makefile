@@ -159,6 +159,10 @@ ZIP_OBJS = \
   $O\ZipUpdate.obj \
   $O\ZipRegister.obj \
 
+PK3_OBJS = \
+  $O\Pk3Handler.obj \
+  $O\Pk3Stream.obj \
+  $O\Pk3Register.obj \
 
 COMPRESS_OBJS = \
   $O\Bcj2Coder.obj \
@@ -261,6 +265,7 @@ OBJS = \
   $(CAB_OBJS) \
   $(TAR_OBJS) \
   $(ZIP_OBJS) \
+  $(PK3_OBJS) \
   $(COMPRESS_OBJS) \
   $(LZMA_BENCH_OBJS) \
   $(CRYPTO_OBJS) \
@@ -294,6 +299,8 @@ $(CAB_OBJS): ../../Archive/Cab/$(*B).cpp
 $(TAR_OBJS): ../../Archive/Tar/$(*B).cpp
 	$(COMPL)
 $(ZIP_OBJS): ../../Archive/Zip/$(*B).cpp
+	$(COMPL)
+$(PK3_OBJS): ../../Archive/Pk3/$(*B).cpp
 	$(COMPL)
 
 $(COMPRESS_OBJS): ../../Compress/$(*B).cpp
