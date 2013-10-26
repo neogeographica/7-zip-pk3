@@ -5,7 +5,7 @@
 #define xc 144
 #define yc 144
 
-#define y 80
+#define y 119
 
 IDI_LOGO ICON "../../UI/FileManager/7zipLogo.ico"
 
@@ -21,6 +21,9 @@ CAPTION "About 7-Zip"
   ICON   IDI_LOGO, -1, m, m, 32, 32, SS_REALSIZEIMAGE
   LTEXT  MY_7ZIP_VERSION, -1, m, 54, xc, 8
   LTEXT  MY_COPYRIGHT, -1, m, 67, xc, 8
+  LTEXT  "QuakeLive pk3 support:", -1, m, 80, xc, 8
+  LTEXT  "by Joel Baxter (neogeographica.com)", -1, (m + m), 93, xc, 8
+  LTEXT  "data from Luigi Auriemma", -1, (m + m), 106, xc, 8
   LTEXT  "7-Zip is free software",
          IDC_ABOUT_STATIC_REGISTER_INFO, m, y, xc, (by - y - 1)
 }

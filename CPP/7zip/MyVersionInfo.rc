@@ -8,7 +8,7 @@
 // #include <WinVer.h>
 #include "MyVersion.h"
 
-#define MY_VER MY_VER_MAJOR,MY_VER_MINOR,MY_VER_BUILD,0
+#define MY_VER MY_VER_MAJOR,MY_VER_MINOR,MY_VER_BUILD,MY_VER_PK3_BUILD
 
 #ifdef DEBUG
 #define DBG_FL VS_FF_DEBUG
