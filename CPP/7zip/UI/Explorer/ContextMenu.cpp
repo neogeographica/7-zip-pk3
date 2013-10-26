@@ -220,6 +220,22 @@ static CContextMenuCommand g_Commands[] =
     IDS_CONTEXT_COMPRESS_TO_EMAIL,
     IDS_CONTEXT_COMPRESS_TO_EMAIL_HELP,
     0x02000113
+  },
+  {
+    NContextMenuFlags::kCompressToPk3,
+    CZipContextMenu::kCompressToPk3,
+    L"CompressToPk3",
+    IDS_CONTEXT_COMPRESS_TO,
+    IDS_CONTEXT_COMPRESS_TO_HELP,
+    0x0200010F
+  },
+  {
+    NContextMenuFlags::kCompressToPk3Email,
+    CZipContextMenu::kCompressToPk3Email,
+    L"CompressToPk3Email",
+    IDS_CONTEXT_COMPRESS_TO_EMAIL,
+    IDS_CONTEXT_COMPRESS_TO_EMAIL_HELP,
+    0x02000113
   }
 };
 
@@ -549,6 +565,7 @@ STDMETHODIMP CZipContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu,
     UString archiveName = CreateArchiveName(fileName, _fileNames.Size() > 1, false);
     UString archiveName7z = archiveName + L".7z";
     UString archiveNameZip = archiveName + L".zip";
+    UString archiveNamePk3 = archiveName + L".pk3";
     UString archivePathPrefix;
     NFile::NDirectory::GetOnlyDirPrefix(fileName, archivePathPrefix);
 
@@ -637,6 +654,38 @@ STDMETHODIMP CZipContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu,
       commandMapItem.ArcName = archiveNameZip;
       commandMapItem.ArcType = L"zip";
       s = MyFormatNew(s, GetQuotedReducedString(archiveNameZip));
+      MyInsertMenu(popupMenu, subIndex++, currentCommandID++, s);
+      _commandMap.Add(commandMapItem);
+    }
+    #endif
+
+    // CompressToPk3
+    if (contextMenuFlags & NContextMenuFlags::kCompressToPk3)
+    {
+      CCommandMapItem commandMapItem;
+      UString s;
+      FillCommand(kCompressToPk3, s, commandMapItem);
+      if (_dropMode)
+        commandMapItem.Folder = _dropPath;
+      else
+        commandMapItem.Folder = archivePathPrefix;
+      commandMapItem.ArcName = archiveNamePk3;
+      commandMapItem.ArcType = L"pk3";
+      s = MyFormatNew(s, GetQuotedReducedString(archiveNamePk3));
+      MyInsertMenu(popupMenu, subIndex++, currentCommandID++, s);
+      _commandMap.Add(commandMapItem);
+    }
+
+    #ifdef EMAIL_SUPPORT
+    // CompressToPk3Email
+    if ((contextMenuFlags & NContextMenuFlags::kCompressToPk3Email) != 0  && !_dropMode)
+    {
+      CCommandMapItem commandMapItem;
+      UString s;
+      FillCommand(kCompressToPk3Email, s, commandMapItem);
+      commandMapItem.ArcName = archiveNamePk3;
+      commandMapItem.ArcType = L"pk3";
+      s = MyFormatNew(s, GetQuotedReducedString(archiveNamePk3));
       MyInsertMenu(popupMenu, subIndex++, currentCommandID++, s);
       _commandMap.Add(commandMapItem);
     }
@@ -745,11 +794,14 @@ STDMETHODIMP CZipContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO commandInfo)
       case kCompressTo7zEmail:
       case kCompressToZip:
       case kCompressToZipEmail:
+      case kCompressToPk3:
+      case kCompressToPk3Email:
       {
         bool email =
             (cmdID == kCompressEmail) ||
             (cmdID == kCompressTo7zEmail) ||
-            (cmdID == kCompressToZipEmail);
+            (cmdID == kCompressToZipEmail) ||
+            (cmdID == kCompressToPk3Email);
         bool showDialog =
             (cmdID == kCompress) ||
             (cmdID == kCompressEmail);

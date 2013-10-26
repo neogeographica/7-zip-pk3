@@ -44,13 +44,15 @@ static CContextMenuItem kMenuItems[] =
 
   { IDS_CONTEXT_COMPRESS, 0x02000107, kCompress },
   { IDS_CONTEXT_COMPRESS_TO, 0x0200010F, kCompressTo7z },
-  { IDS_CONTEXT_COMPRESS_TO, 0x0200010F, kCompressToZip }
+  { IDS_CONTEXT_COMPRESS_TO, 0x0200010F, kCompressToZip },
+  { IDS_CONTEXT_COMPRESS_TO, 0x0200010F, kCompressToPk3 }
 
   #ifndef UNDER_CE
   ,
   { IDS_CONTEXT_COMPRESS_EMAIL, 0x02000111, kCompressEmail },
   { IDS_CONTEXT_COMPRESS_TO_EMAIL, 0x02000113, kCompressTo7zEmail },
-  { IDS_CONTEXT_COMPRESS_TO_EMAIL, 0x02000113, kCompressToZipEmail }
+  { IDS_CONTEXT_COMPRESS_TO_EMAIL, 0x02000113, kCompressToZipEmail },
+  { IDS_CONTEXT_COMPRESS_TO_EMAIL, 0x02000113, kCompressToPk3Email }
   #endif
 };
 
@@ -107,6 +109,10 @@ bool CMenuPage::OnInit()
           case kCompressToZip:
           case kCompressToZipEmail:
             s2 += L".zip";
+            break;
+          case kCompressToPk3:
+          case kCompressToPk3Email:
+            s2 += L".pk3";
             break;
         }
         s = MyFormatNew(s, s2);

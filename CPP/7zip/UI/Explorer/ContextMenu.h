@@ -27,9 +27,11 @@ public:
     kCompressTo7z,
     kCompressTo7zEmail,
     kCompressToZip,
-    kCompressToZipEmail
+    kCompressToZipEmail,
+    kCompressToPk3,
+    kCompressToPk3Email
   };
-  
+
   MY_UNKNOWN_IMP2_MT(IContextMenu, IShellExtInit)
 
   // IShellExtInit
