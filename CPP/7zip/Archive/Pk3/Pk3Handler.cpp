@@ -25,8 +25,10 @@ STDMETHODIMP CHandler::Open(IInStream *inStream,
 {
     // Wrap the input stream to perform the QuakeLive XOR before data is seen
     // by the Zip handler.
-    CMyComPtr<CPk3InStream> pk3InStream = new CPk3InStream(inStream);
-    return m_Delegate->Open(pk3InStream, maxCheckStartPosition, callback);
+    CMyComPtr<IInStream> wrappedInStream;
+    CPk3InStream *pk3InStream = new CPk3InStream(inStream);
+    wrappedInStream = pk3InStream;
+    return m_Delegate->Open(wrappedInStream, maxCheckStartPosition, callback);
 }
 
 STDMETHODIMP CHandler::Close()
@@ -92,8 +94,10 @@ STDMETHODIMP CHandler::UpdateItems(ISequentialOutStream *outStream,
     {
         return E_NOTIMPL;
     }
-    CMyComPtr<CPk3OutStream> pk3OutStream = new CPk3OutStream(outStreamReal);
-    return m_Delegate->UpdateItems(pk3OutStream, numItems, callback);
+    CMyComPtr<ISequentialOutStream> wrappedOutStream;
+    CPk3OutStream *pk3OutStream = new CPk3OutStream(outStreamReal);
+    wrappedOutStream = pk3OutStream;
+    return m_Delegate->UpdateItems(wrappedOutStream, numItems, callback);
 }
 
 STDMETHODIMP CHandler::GetFileTimeType(UInt32 *timeType)
