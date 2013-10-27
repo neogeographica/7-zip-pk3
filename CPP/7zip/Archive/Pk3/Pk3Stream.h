@@ -27,7 +27,16 @@ private:
     UInt64 _pos;
 };
 
-#define STAGING_BUFFER_SIZE (64 * 1024)
+// As long as this is moderately large, the compression time doesn't appear to
+// be too sensitive to the buffer size. I did some quick tests creating a pk3
+// (from the QL version of jlctf2), doing 5 reps with each buffer size and
+// averaging the times:
+//     1 kB: 685ms
+//     4 kB: 607ms
+//    16 kB: 558ms
+//    64 kB: 566ms
+//   512 kB: 572ms
+#define STAGING_BUFFER_SIZE (16 * 1024)
 
 class CPk3OutStream:
     public IOutStream,
