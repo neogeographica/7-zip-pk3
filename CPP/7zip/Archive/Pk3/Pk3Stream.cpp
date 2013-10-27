@@ -89,12 +89,6 @@ inline void XformData(void *dataIn, void *dataOut, UInt32 len, UInt64 pos)
 CPk3InStream::CPk3InStream(IInStream *stream)
 {
     _stream = stream;  
-    // XXX This constructor should only be invoked when starting at the
-    //     beginning of the pk3 archive, but I still need to think about
-    //     whether the stream position would ever NOT be zero at this point.
-    //     Test cases of pk3-inside-other-archive perhaps? If the stream can
-    //     have a nonzero seek pointer, then the initial pointer would need
-    //     to be saved & used to affect the XOR.
     _pos = 0;
 }
 
@@ -130,8 +124,6 @@ STDMETHODIMP CPk3InStream::Seek(Int64 offset, UInt32 seekOrigin, UInt64 *newPosi
 CPk3OutStream::CPk3OutStream(IOutStream *stream)
 {
     _stream = stream;  
-    // XXX Similar to CPk3InStream, question about whether seek pointer is
-    //     always zero at this point.
     _pos = 0;
 }
 
