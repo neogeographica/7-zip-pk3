@@ -4,6 +4,9 @@
 *.suo
 *.user
 
+# installer work staging
+/deliverables/
+
 # build results
 O/
 AMD64/
