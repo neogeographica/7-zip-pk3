@@ -34,6 +34,6 @@ Misc Notes
 ==========
 A Quake Live pk3 is just a zip archive that has been pushed through an XOR filter. So this modification of 7-zip simply wraps the file input or output stream with the appropriate filter when dealing with a Quake Live pk3, then delegates operations to the existing ziphandler code.
 
-I disabled zip encryption for Quake Live pk3s, as that would make them unreadable. There may be other zip compression options that aren't compatible with Quake Live (or with Quake 3), but I'm not aware of any such issues. So when composing a pk3 file you will have all the normal options for composing a zip archive.
+I disabled zip encryption for Quake Live pk3s, as that would make them unreadable. The option to split the archive into parts/volumes is also disabled for pk3 creation. There may be other zip compression options that aren't compatible with Quake Live (or with Quake 3), but I'm not aware of any such issues. So when composing a pk3 file you will have all the other normal options for composing a zip archive.
 
 Some additional discussion and details may be posted at [neogeographica.com](http://neogeographica.com/).
