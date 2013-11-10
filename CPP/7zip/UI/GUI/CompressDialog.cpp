@@ -419,10 +419,18 @@ void CCompressDialog::CheckSFXControlsEnable()
 
 void CCompressDialog::CheckVolumeEnable()
 {
-  bool isSFX = IsSFX();
-  m_Volume.Enable(!isSFX);
-  if (isSFX)
+  // Don't offer this option for PK3s, or if the SFX control is enabled.
+  const CArcInfoEx &ai = (*ArcFormats)[GetFormatIndex()];
+  bool isPK3 = (ai.Name.CompareNoCase(L"pk3") == 0);
+  if ((!IsSFX()) && (!isPK3))
+  {
+    m_Volume.Enable(true);
+  }
+  else
+  {
+    m_Volume.Enable(false);
     m_Volume.SetText(TEXT(""));
+  }
 }
 
 void CCompressDialog::CheckControlsEnable()
