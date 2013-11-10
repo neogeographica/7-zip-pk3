@@ -7,6 +7,11 @@ CFLAGS = $(CFLAGS) -I ../../../ \
 CFLAGS = $(CFLAGS) -D_7ZIP_LARGE_PAGES
 !ENDIF
 
+!IFDEF DEBUG
+CFLAGS = $(CFLAGS) /Zi
+LIBS = $(LIBS) /DEBUG
+!ENDIF
+
 COMMON_OBJS = \
   $O\CRC.obj \
   $O\IntToString.obj \

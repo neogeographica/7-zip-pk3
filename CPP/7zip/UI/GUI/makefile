@@ -10,6 +10,11 @@ LIBS = $(LIBS) comctl32.lib htmlhelp.lib comdlg32.lib
 CFLAGS = $(CFLAGS) -DWIN_LONG_PATH -DSUPPORT_DEVICE_FILE -D_7ZIP_LARGE_PAGES
 !ENDIF
 
+!IFDEF DEBUG
+CFLAGS = $(CFLAGS) /Zi
+LIBS = $(LIBS) /DEBUG
+!ENDIF
+
 GUI_OBJS = \
   $O\BenchmarkDialog.obj \
   $O\CompressDialog.obj \
