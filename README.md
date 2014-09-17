@@ -1,6 +1,10 @@
-What?
-=====
-Support for encoded QuakeLive pk3 archives in 7-zip.
+Before You Use This
+===================
+**Quake Live has changed its pk3 format and no longer encodes the archive; as with Quake 3, the Quake Live pk3 files are now just zip archives with a different extension. This utility is now only useful if for some reason you need to open an encoded pk3 from the old version of Quake Live.**
+
+OK, now for the original spiel:
+
+This utility provides support for encoded Quake Live pk3 archives in 7-zip.
 
 Anything that 7-zip can do with zip files, this modified version can also do with pk3 files. Both Quake 3 and Quake Live pk3 files can be read and updated. If you create a new pk3 file, it will be Quake Live style. (To instead create a new Quake 3 style pk3: create it as a zip file and then manually change the extension to pk3.)
 
